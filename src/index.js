@@ -1,14 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import { AuthProvider } from 'react-oidc-context';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
+
+const onSigninCallback = () => {
+  // Remove query string parameters from URL
+  const url = new URL(window.location.href);
+  url.search = "";
+  window.history.replaceState({}, "", url);
+};
+
+const oidcConfig = {
+  authority: 'http://localhost:8080/realms/demo',
+  client_id: 'secured-app',
+  redirect_uri: 'http://localhost:3000',
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  <AuthProvider {...oidcConfig} onSigninCallback={onSigninCallback}>
     <App />
-  </React.StrictMode>
+  </AuthProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
