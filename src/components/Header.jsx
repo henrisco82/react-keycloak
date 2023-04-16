@@ -1,51 +1,53 @@
 import React from 'react'
-import CssBaseline from '@mui/material/CssBaseline';
+
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { GlobalStyles } from '@mui/material';
+
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
+import Button from '@mui/material/Button';
 
-const rightLink = {
-    fontSize: 16,
-    color: 'common.white',
-    ml: 3,
-  };
-
+import { useAuth } from 'react-oidc-context';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
+    const auth = useAuth();
+    const navigate = useNavigate();
+    switch(auth.activeNavigator){
+        case 'signinSilent':
+        return <div>Signing in silently...</div>;
+        case 'signoutRedirect':
+        return <div>Signing out...</div>;
+        default:
+        break;
+    }
+
+    if(auth.isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if(auth.error){
+        return <div>Ooops... {auth.error.message}</div>;
+    }
   return (
-    <>
-    <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
-    <CssBaseline />
       <AppBar position="relative">
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap>
             Secured App
           </Typography>
           <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-            <Link
-              color="inherit"
-              variant="h6"
-              underline="none"
-              href="#"
-              sx={rightLink}
-            >
-              {'Log In'}
-            </Link>
-            <Link
-              variant="h6"
-              underline="none"
-              href="#"
-              sx={{ ...rightLink }}
-            >
-              {'Log Out'}
-            </Link>
+            {auth.isAuthenticated ? (
+            <>
+                <Button variant="contained" onClick={() => navigate('/')}>HOME</Button>
+                <Button variant="contained" onClick={() => navigate('/hidden') }>HIDDEN</Button>
+                <Button variant="contained" onClick={() => auth.removeUser()}>LOG OUT </Button>
+            </>
+            ) : (
+            <Button variant="contained" onClick={() => auth.signinRedirect()}>LOG IN </Button>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
-      </>
   )
 }
 

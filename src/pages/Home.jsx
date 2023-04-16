@@ -7,23 +7,6 @@ import { useNavigate } from 'react-router-dom';
 const Home = () => {
     const auth = useAuth();
     const navigate = useNavigate();
-    switch(auth.activeNavigator){
-      case 'signinSilent':
-        return <div>Signing in silently...</div>;
-      case 'signoutRedirect':
-        return <div>Signing out...</div>;
-      default:
-        break;
-    }
-  
-    if(auth.isLoading) {
-      return <div>Loading...</div>;
-    }
-  
-    if(auth.error){
-      return <div>Ooops... {auth.error.message}</div>;
-    }
-  
     return (
         <main>
         <Box

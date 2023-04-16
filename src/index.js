@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import { AuthProvider } from 'react-oidc-context';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { GlobalStyles } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -25,6 +27,8 @@ const oidcConfig = {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <AuthProvider {...oidcConfig} onSigninCallback={onSigninCallback}>
+    <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
+    <CssBaseline />
     <App />
   </AuthProvider>
 );
