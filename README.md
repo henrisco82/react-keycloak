@@ -72,16 +72,32 @@ Regardless of which authorization server you use, ensure it has:
 
 ### 4. Configure the Application
 
-The app is pre-configured to work with a standard OAuth 2.0 / OIDC setup. If you used different settings, update `src/main.jsx`:
+The app uses environment variables for OAuth 2.0 / OIDC configuration. To customize the settings:
 
-```javascript
-const oidcConfig = {
-  authority: 'http://localhost:9000', // Your authorization server base URL
-  client_id: 'client',                // Your OAuth client ID
-  redirect_uri: 'http://localhost:3000',     // Your app URL
-  post_logout_redirect_uri: 'http://localhost:3000',
-};
+```bash
+# Copy the example environment file
+cp .env.example .env
+
+# Edit .env with your authorization server details
 ```
+
+Update `.env` with your configuration:
+
+```bash
+# OAuth 2.0 / OIDC Configuration
+VITE_OIDC_AUTHORITY=http://localhost:9000          # Your authorization server base URL
+VITE_OIDC_CLIENT_ID=client                         # Your OAuth client ID
+VITE_OIDC_REDIRECT_URI=http://localhost:3000       # Your app URL
+VITE_OIDC_POST_LOGOUT_REDIRECT_URI=http://localhost:3000  # Post-logout redirect URL
+```
+
+**Environment Variables:**
+- `VITE_OIDC_AUTHORITY`: Base URL of your OAuth 2.0 / OIDC authorization server
+- `VITE_OIDC_CLIENT_ID`: Client ID registered with your authorization server
+- `VITE_OIDC_REDIRECT_URI`: URL where users are redirected after authentication
+- `VITE_OIDC_POST_LOGOUT_REDIRECT_URI`: URL where users are redirected after logout
+
+**Note:** The app includes fallback defaults, so it will work out-of-the-box with `.env.example` values. Only create `.env` if you need to override the defaults. After updating `.env`, restart the development server.
 
 ### 5. Start the Application
 
@@ -124,7 +140,9 @@ npm run preview
 ## 🗂️ Project Structure
 
 ```
-src/
+/
+├── .env.example           # Environment variables template
+├── src/
 ├── components/          # Reusable UI components
 │   ├── Footer.jsx      # App footer component
 │   └── Register.jsx    # User registration page
@@ -198,8 +216,14 @@ src/
 
 3. **Authentication not working**
    - Check browser console for errors
-   - Verify OIDC configuration in `main.jsx`
+   - Verify OIDC configuration in `.env` file
    - Ensure CORS is properly configured in your authorization server
+
+4. **Environment variables not loading**
+   - Copy `.env.example` to `.env` and customize values
+   - Restart the dev server after changing `.env` file
+   - Ensure variables are prefixed with `VITE_`
+   - Variables only load on server start, not hot reload
 
 ## 📚 Additional Resources
 
