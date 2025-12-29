@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const Home = () => {
     const auth = useAuth();
     const navigate = useNavigate();
+
     return (
         <main>
         <Box
@@ -26,7 +27,7 @@ const Home = () => {
                 color="text.primary"
                 gutterBottom
               >
-                Hi {auth.user?.profile.preferred_username}!
+                Hi {auth.user?.profile.sub}!
               </Typography>
                 <Typography variant="h5" align="center" color="text.secondary" paragraph>
                     You are logged in and can access the secured content.
@@ -44,8 +45,8 @@ const Home = () => {
                         Welcome to the Secured App!
                     </Typography>
                     <Typography variant="h5" align="center" color="text.secondary" paragraph>
-                        This is a secured application that uses OpenID Connect to authenticate,
-                        it uses keycloak as the identity provider and react-oidc-context to manage
+                        This is a secured application that uses OpenID Connect to authenticate
+                        with any OAuth 2.0 / OIDC compliant authorization server and react-oidc-context to manage
                         the authentication flow.
                     </Typography>
                 </> 
@@ -63,7 +64,10 @@ const Home = () => {
                 <Button variant="outlined" onClick={() => navigate('/hidden') }>Hidden Page</Button>
             </>
             ) : (
-            <Button variant="contained" onClick={() => auth.signinRedirect()}>Login with keycloak </Button>
+            <>
+                <Button variant="contained" onClick={() => auth.signinRedirect()}>Login</Button>
+                <Button variant="outlined" onClick={() => navigate('/register')}>Register</Button>
+            </>
             )}
             </Stack>
           </Container>

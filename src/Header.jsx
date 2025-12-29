@@ -20,7 +20,7 @@ const Header = () => {
           <Typography variant="h6" color="inherit" noWrap>
             Secured App
           </Typography>
-          <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+          <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
             {auth.isAuthenticated ? (
             <>
                 <Button variant="contained" onClick={() => navigate('/')}>HOME</Button>
@@ -28,7 +28,10 @@ const Header = () => {
                 <Button variant="contained" onClick={() => auth.signoutRedirect()}>LOG OUT </Button>
             </>
             ) : (
-            <Button variant="contained" onClick={() => auth.signinRedirect()}>LOG IN </Button>
+            <>
+                <Button variant="contained" onClick={() => navigate('/register')}>REGISTER</Button>
+                <Button variant="contained" onClick={() => auth.signinRedirect()}>LOG IN </Button>
+            </>
             )}
           </Box>
         </Toolbar>

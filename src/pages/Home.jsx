@@ -44,8 +44,8 @@ const Home = () => {
                         Welcome to the Secured App!
                     </Typography>
                     <Typography variant="h5" align="center" color="text.secondary" paragraph>
-                        This is a secured application that uses OpenID Connect to authenticate,
-                        it uses keycloak as the identity provider and react-oidc-context to manage
+                        This is a secured application that uses OpenID Connect to authenticate
+                        with any OAuth 2.0 / OIDC compliant authorization server and react-oidc-context to manage
                         the authentication flow.
                     </Typography>
                 </> 
@@ -63,7 +63,7 @@ const Home = () => {
                 <Button variant="outlined" onClick={() => navigate('/hidden') }>Hidden Page</Button>
             </>
             ) : (
-            <Button variant="contained" onClick={() => auth.signinRedirect()}>Login with keycloak </Button>
+            <Button variant="contained" onClick={() => auth.signinRedirect()}>Login</Button>
             )}
             </Stack>
           </Container>

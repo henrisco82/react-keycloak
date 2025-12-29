@@ -1,6 +1,8 @@
 import React from 'react';
 import { useAuth } from 'react-oidc-context';
+import { Box } from '@mui/material';
 import Header from './Header.jsx';
+import Footer from './components/Footer.jsx';
 import Loading from './Loading.jsx';
 
 const Layout = ({ children }) => {
@@ -24,10 +26,19 @@ const Layout = ({ children }) => {
     }
 
     return (
-        <>
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                minHeight: '100vh'
+            }}
+        >
             <Header />
-            {children}
-        </>
+            <Box component="main" sx={{ flex: 1 }}>
+                {children}
+            </Box>
+            <Footer />
+        </Box>
     );
 };
 
