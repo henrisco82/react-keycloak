@@ -1,13 +1,14 @@
 import { useAuth } from 'react-oidc-context';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 const PrivateRoute = ({ children }) => {
  const auth = useAuth();
- const navigate = useNavigate();
 
- const isLoggedIn = auth.user && auth.user.access_token;
+ if (auth.isLoading) {
+   return <div>Loading...</div>;
+ }
 
- return isLoggedIn ? children : navigate('/');
+ return auth.isAuthenticated ? children : <Navigate to="/" replace />;
 };
 
 export default PrivateRoute;

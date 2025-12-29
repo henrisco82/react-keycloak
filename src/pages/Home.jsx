@@ -59,7 +59,7 @@ const Home = () => {
             >
             {auth.isAuthenticated ? (
             <>
-                <Button variant="contained" onClick={() => auth.removeUser()}>Log out</Button>
+                <Button variant="contained" onClick={() => auth.signoutRedirect()}>Log out</Button>
                 <Button variant="outlined" onClick={() => navigate('/hidden') }>Hidden Page</Button>
             </>
             ) : (
