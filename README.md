@@ -122,6 +122,7 @@ The app will be available at: http://localhost:3000
 - Fill in the required fields: username, email, password, and confirm password
 - Password confirmation ensures both password fields match
 - Form validates all fields with helpful error messages
+- Registration API endpoint: `{VITE_OIDC_AUTHORITY}/api/auth/register`
 - Upon successful registration, users are redirected to the login page
 
 ## 🔧 Available Scripts

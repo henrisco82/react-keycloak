@@ -87,7 +87,8 @@ const Register = () => {
     setErrors({});
 
     try {
-      const response = await fetch('http://localhost:9000/api/auth/register', {
+      const apiUrl = `${import.meta.env.VITE_OIDC_AUTHORITY || 'http://localhost:9000'}/api/auth/register`;
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
