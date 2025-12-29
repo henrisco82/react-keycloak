@@ -16,11 +16,13 @@ const onSigninCallback = () => {
   window.history.replaceState({}, "", url);
 };
 
+// OAuth 2.0 / OIDC Configuration
+// Values are loaded from .env file - copy .env.example to .env to customize
 const oidcConfig = {
-  authority: 'http://localhost:9000',
-  client_id: 'client',
-  redirect_uri: 'http://localhost:3000',
-  post_logout_redirect_uri: 'http://localhost:3000',
+  authority: import.meta.env.VITE_OIDC_AUTHORITY || 'http://localhost:9000',
+  client_id: import.meta.env.VITE_OIDC_CLIENT_ID || 'client',
+  redirect_uri: import.meta.env.VITE_OIDC_REDIRECT_URI || 'http://localhost:3000',
+  post_logout_redirect_uri: import.meta.env.VITE_OIDC_POST_LOGOUT_REDIRECT_URI || 'http://localhost:3000',
 };
 
 ReactDOM.createRoot(document.getElementById('root')).render(
