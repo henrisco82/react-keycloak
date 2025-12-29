@@ -1,21 +1,22 @@
 import React from 'react';
 import { useAuth } from 'react-oidc-context';
 import Header from './Header';
+import Loading from './Loading';
 
 const Layout = ({ children }) => {
     const auth = useAuth();
 
     switch(auth.activeNavigator){
-        case 'signinSilent':
-            return <div>Signing in silently...</div>;
+        case 'signinRedirect':
+            return <Loading message="Signing in..." />;
         case 'signoutRedirect':
-            return <div>Signing out...</div>;
+            return <Loading message="Signing out..." />;
         default:
             break;
     }
 
     if(auth.isLoading) {
-        return <div>Loading...</div>;
+        return <Loading message="Loading..." />;
     }
 
     if(auth.error){
