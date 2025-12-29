@@ -19,9 +19,10 @@ const onSigninCallback = () => {
 };
 
 const oidcConfig = {
-  authority: 'http://localhost:8080/realms/demo',
-  client_id: 'secured-app',
+  authority: 'http://localhost:9000',
+  client_id: 'client',
   redirect_uri: 'http://localhost:3000',
+  post_logout_redirect_uri: 'http://localhost:3000',
 };
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
