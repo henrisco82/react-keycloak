@@ -1,70 +1,206 @@
-# Getting Started with Vite + React
+# Secured React App with Keycloak Authentication
 
-This project was migrated from Create React App to [Vite](https://vitejs.dev/).
+A modern React application built with Vite that demonstrates OpenID Connect (OIDC) authentication using Keycloak as the authorization server. The app features a protected route system and Material-UI components for a polished user interface.
 
-## Available Scripts
+## 🏗️ Architecture
 
-In the project directory, you can run:
+- **Frontend**: React 18 with Vite build tool
+- **Authentication**: Keycloak (OIDC/OAuth 2.0)
+- **UI Library**: Material-UI (MUI)
+- **Routing**: React Router v6
+- **State Management**: React Context (via react-oidc-context)
 
-### `npm run dev`
+## 📋 Prerequisites
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Node.js**: v20.19.0 or higher (recommended: v20.19.4)
+- **Keycloak Server**: v17.0.0 or higher
+- **npm**: v10.8.2 or higher
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🚀 Setup Instructions
 
-### `npm test`
+### 1. Install Dependencies
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm install
+```
 
-### `npm run build`
+### 2. Set Up Keycloak Server
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### Option A: Using Docker (Recommended)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+# Run Keycloak with Docker
+docker run -p 9000:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:latest start-dev
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Keycloak will be available at: http://localhost:9000
 
-### `npm run eject`
+#### Option B: Download and Install Manually
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Download Keycloak from [official website](https://www.keycloak.org/downloads)
+2. Extract and run:
+   ```bash
+   # Start Keycloak in development mode
+   ./bin/kc.sh start-dev
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 3. Configure Keycloak Realm and Client
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. **Access Keycloak Admin Console**
+   - Open: http://localhost:9000
+   - Login with: `admin` / `admin`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+2. **Create a New Realm**
+   - Go to "Master" dropdown → "Create realm"
+   - Name: `myrealm` (or any name you prefer)
+   - Click "Create"
 
-## Learn More
+3. **Create a Client**
+   - Go to "Clients" → "Create client"
+   - Client ID: `client`
+   - Client Type: `OpenID Connect`
+   - Click "Next"
+   - Enable "Client authentication" → Off
+   - Authentication flow: Enable "Standard flow"
+   - Login settings:
+     - Valid redirect URIs: `http://localhost:3000/*`
+     - Web origins: `http://localhost:3000`
+   - Click "Save"
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+4. **Create a Test User**
+   - Go to "Users" → "Create new user"
+   - Username: `testuser`
+   - Email: `test@example.com`
+   - First name: `Test`
+   - Last name: `User`
+   - Click "Create"
+   - Go to "Credentials" tab → "Set password"
+   - Password: `password`
+   - Temporary: Off
+   - Click "Save"
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 4. Configure the Application
 
-### Code Splitting
+The app is pre-configured to work with the above Keycloak setup. If you used different settings, update `src/main.jsx`:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```javascript
+const oidcConfig = {
+  authority: 'http://localhost:9000', // Your Keycloak URL
+  client_id: 'client',                // Your client ID
+  redirect_uri: 'http://localhost:3000',     // Your app URL
+  post_logout_redirect_uri: 'http://localhost:3000',
+};
+```
 
-### Analyzing the Bundle Size
+### 5. Start the Application
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm run dev
+```
 
-### Making a Progressive Web App
+The app will be available at: http://localhost:3000
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 📱 Usage
 
-### Advanced Configuration
+1. **Home Page**: Public welcome page with login prompt
+2. **Authentication**: Click "Login with Keycloak" to authenticate
+3. **Protected Route**: Access `/hidden` route after authentication
+4. **User Info**: View authenticated user information
+5. **Logout**: Sign out and return to home page
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 🔧 Available Scripts
 
-### Deployment
+```bash
+# Start development server
+npm run dev
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+# Build for production
+npm run build
 
-### `npm run build` fails to minify
+# Preview production build
+npm run preview
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🗂️ Project Structure
+
+```
+src/
+├── components/          # Reusable UI components
+├── pages/              # Page components
+├── App.jsx             # Main app component with routing
+├── main.jsx            # App entry point with OIDC config
+├── Layout.jsx          # App layout wrapper
+├── PrivateRoute.jsx    # Route protection component
+├── Loading.jsx         # Loading spinner component
+└── Home.jsx            # Home page component
+```
+
+## 🔐 Authentication Flow
+
+1. User clicks "Login with Keycloak"
+2. Redirected to Keycloak login page
+3. After successful authentication, redirected back to app
+4. Access token stored in memory (via react-oidc-context)
+5. Protected routes check authentication status
+6. Logout clears tokens and redirects to home
+
+## 🛠️ Technologies Used
+
+- **React 18**: UI framework
+- **Vite**: Fast build tool and dev server
+- **Keycloak**: Identity and access management
+- **Material-UI**: React component library
+- **React Router**: Client-side routing
+- **react-oidc-context**: OIDC authentication library
+- **TypeScript**: Type definitions (via @types packages)
+
+## 🔒 Security Features
+
+- OpenID Connect authentication
+- JWT token handling
+- Automatic token refresh
+- Protected routes
+- Secure logout
+- CSRF protection via OIDC flow
+
+## 🚀 Deployment
+
+1. Build the app:
+   ```bash
+   npm run build
+   ```
+
+2. The `dist/` folder contains production-ready files
+
+3. Configure your web server to:
+   - Serve static files from `dist/`
+   - Handle client-side routing (SPA mode)
+   - Set up HTTPS in production
+
+4. Update Keycloak client configuration with production URLs
+
+## 🐛 Troubleshooting
+
+**Common Issues:**
+
+1. **404 on localhost:3000**
+   - Ensure `index.html` is in the root directory (not `public/`)
+   - Check that Vite dev server is running
+
+2. **Keycloak connection issues**
+   - Verify Keycloak is running on port 9000
+   - Check realm and client configuration
+   - Ensure redirect URIs match app URL
+
+3. **Authentication not working**
+   - Check browser console for errors
+   - Verify OIDC configuration in `main.jsx`
+   - Ensure CORS is properly configured in Keycloak
+
+## 📚 Additional Resources
+
+- [Keycloak Documentation](https://www.keycloak.org/documentation)
+- [React OIDC Context](https://github.com/authts/react-oidc-context)
+- [Material-UI Documentation](https://mui.com/)
+- [Vite Documentation](https://vitejs.dev/)
+- [React Router Documentation](https://reactrouter.com/)
